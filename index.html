@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>❤️ Valentine Trap ❤️</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  background:linear-gradient(135deg,#ff6a88,#ff99ac);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:'Segoe UI',sans-serif;
+  overflow:hidden;
+}
+
+.card{
+  background:#fff;
+  width:90%;
+  max-width:360px;
+  padding:25px;
+  border-radius:22px;
+  text-align:center;
+  box-shadow:0 15px 30px rgba(0,0,0,.3);
+  position:relative;
+}
+
+h2{color:#ff3f6c}
+p{font-size:18px; white-space:pre-line}
+
+.buttons{
+  margin-top:20px;
+  position:relative;
+  height:150px;
+}
+
+button{
+  padding:14px 18px;
+  font-size:16px;
+  border-radius:14px;
+  border:none;
+  cursor:pointer;
+  transition:all .25s ease;
+  max-width:100%;
+}
+
+#yes{
+  background:#ff3f6c;
+  color:#fff;
+}
+
+#no{
+  background:#ddd;
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.heart{
+  font-size:50px;
+  animation:float 1.5s infinite;
+}
+
+@keyframes float{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-15px)}
+  100%{transform:translateY(0)}
+}
+
+.hug{
+  font-size:70px;
+  animation:pop 1s infinite alternate;
+}
+
+@keyframes pop{
+  from{transform:scale(1)}
+  to{transform:scale(1.15)}
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+  <h2 id="title">❤️ Hey You ❤️</h2>
+  <p id="text">Do you love me? 😘</p>
+
+  <div class="buttons" id="btnArea">
+    <button id="yes" onclick="yesClick()">Yes ❤️</button>
+    <button id="no" onclick="noClick()">No 😜</button>
+  </div>
+</div>
+
+<script>
+// ===== NAME HANDLING =====
+const params = new URLSearchParams(window.location.search);
+const nameParam = params.get("name");
+
+const allowedNames = {
+  vismaya: "Vismaya",
+  akalya: "Akalya",
+  parvathi: "Parvathi"
+};
+
+let personName = "You";
+
+if (nameParam && allowedNames[nameParam.toLowerCase()]) {
+  personName = allowedNames[nameParam.toLowerCase()];
+  document.getElementById("title").innerText =
+    "❤️ Hey " + personName + " ❤️";
+}
+
+// ===== GAME STATE =====
+let noCount = 0;
+let yesScale = 1;
+let firstYesDone = false;
+
+// ===== NO CLICK (BUTTON TEXT CHANGES) =====
+function noClick(){
+  noCount++;
+
+  let no = document.getElementById("no");
+  let yes = document.getElementById("yes");
+  let area = document.getElementById("btnArea");
+
+  // YES button grow 😈
+  yesScale += 0.2;
+  yes.style.transform = `scale(${yesScale})`;
+
+  if(noCount === 1){
+    moveNo(area,no);
+    no.innerText = "Poi soladha 😜";
+  }
+  else if(noCount === 2){
+    no.innerText = "Na innum konjam wait pananum pola 🥺";
+  }
+  else if(noCount === 3){
+    no.innerText = "Podhum appuram na kasta paduva pathuko 😅";
+  }
+  else{
+    no.innerText =
+      "Podhum " + personName +
+      " 😈\nYES click pannama escape aaga mudiyadhu 💖";
+    no.style.left = "50%";
+    no.style.top = "60px";
+  }
+}
+
+// ===== MOVE NO SAFELY =====
+function moveNo(area,no){
+  let maxX = area.clientWidth - no.offsetWidth;
+  let maxY = area.clientHeight - no.offsetHeight;
+  no.style.left = Math.random()*maxX + "px";
+  no.style.top  = Math.random()*maxY + "px";
+}
+
+// ===== YES CLICK =====
+function yesClick(){
+  let text = document.getElementById("text");
+
+  // FIRST YES → tease
+  if(!firstYesDone){
+    firstYesDone = true;
+    alert(
+      "Perusa try panni No solla paakura 😏\n" +
+      "Seri " + personName + ", 4 vaati No try pannu 😜"
+    );
+    return;
+  }
+
+  // Block YES until 4 NO clicks
+  if(noCount < 4){
+    text.innerText =
+      personName + " 😜\nKonjam No button try pannalaam...\nApram Yes work aagum 💕";
+    return;
+  }
+
+  // FINAL SURPRISE ❤️
+  document.getElementById("card").innerHTML = `
+    <h2>💖 LOVE YOU ${Vismaya} 💖</h2>
+    <div class="heart">💞 💓 💕</div>
+    <div class="hug">🫂💑</div>
+    <p>
+      Happy Valentine’s Day ❤️\n\n
+      ${Ammu},\n
+      Nee dhaan en life-oda\n
+      most beautiful surprise 😍\n\n
+      Enoda ellaa smile-um,\n
+      ellaa strength-um\n
+      unnala dhaan 💍\n\n
+      I Love You Forever 😘
+    </p>
+  `;
+}
+</script>
+
+</body>
+</html>
